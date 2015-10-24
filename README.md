@@ -6,6 +6,7 @@ As of now, the only way is to copy the file combinatorics.py to your Python3.X/L
 # Documentation
 This is the CPython help generated documentation:
 
+...
 NAME
     combinatorics - Combinatorics is a module for easy combinatorics and counting, as the name implies. You can use it for automation or your math homework.
 
@@ -167,3 +168,4 @@ DATA
 
 FILE
     c:\users\hidden_for_my_privacy_reasons\documents\github\pycombinatorics\combinatorics.py
+...

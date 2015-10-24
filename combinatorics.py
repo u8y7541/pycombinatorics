@@ -157,3 +157,4 @@ if __name__ == '__main__':
 	print(list_nPr(range(1, 11), 2))
 	print(list_nCr(range(1, 11), 2))
 	print(dynamic_remove([1, 2, 3], 2))
+	print(help('__main__'))

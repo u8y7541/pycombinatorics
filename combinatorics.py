@@ -1,5 +1,6 @@
 from functools import reduce
 from operator import mul
+from itertools import product, combinations, permutations
 
 # Lambdas make them short
 
@@ -12,6 +13,9 @@ ballsBoxes = lambda a, b, empty: nCr(a - 1, b - 1) if not empty else nCr(a + b -
 solveTable = lambda a, b, condition: [exec('global result; result = []'), [[exec('global result; result.append([i, j])') for j in b if eval(condition, {'i':i, 'j':j})] for i in a], result][-1]
 countTable = lambda a, b, condition: len(solveTable(a, b, condition))
 probTable = lambda a, b, condition: [countTable(a, b, condition), len(a) * len(b)]
+list_nCr = lambda a, b: list(combinations(a, b))
+list_nPr = lambda a, b: list(permutations(a, b))
+dynamic_remove = lambda a, *b: [i for i in a if i not in b]
 
 
 # Documentation
@@ -24,7 +28,7 @@ for i in g:
 	except:
 		pass
 
-__doc__ = '''Combinatorics is a module for easy combinatorics and counting, as the name implies. You can use it for automation or you math homework.'''
+__doc__ = '''Combinatorics is a module for easy combinatorics and counting, as the name implies. You can use it for automation or your math homework.'''
 gcd.__doc__ = '''Finds the greatest common denominator of two numbers using the Euclidean recursive method.
 				 
 				 >>> gcd(60, 72)
@@ -100,7 +104,44 @@ probTable.__doc__ = '''This function returns a two-element list of [countTable(a
 
 					   >>> probTable([1, 2, 3], [2, 3, 4], 'i * j % 2 == 0')
 					   [7, 9]'''
+list_nCr.__doc__ = '''This function lists all possibilities of nCr given a list of elements and the r value.
+					  Note: Code is from itertools.combinations. The output is just list(combinations(a, b)). See the docs for itertools.combinations for more help.
+					  Example combinatorial use: List the ways to choose two numbers from 1 to 10 without replacement where order does not matter.
 
+					  >>> list_nCr(range(1, 11), 2)
+					  [(1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10), (2, 3), (2, 4), (2, 5), (2, 6), (2, 7), (2, 8), \
+					  (2, 9), (2, 10), (3, 4), (3, 5), (3, 6), (3, 7), (3, 8), (3, 9), (3, 10), (4, 5), (4, 6), (4, 7), (4, 8), (4, 9), (4, 10), \
+					  (5, 6), (5, 7), (5, 8), (5, 9), (5, 10), (6, 7), (6, 8), (6, 9), (6, 10), (7, 8), (7, 9), (7, 10), (8, 9), (8, 10), (9, 10)]
+					  >>> list_nCr(range(1, 4), 3)
+					  [(1, 2), (1, 3), (2, 3)]
+					  >>> list_nCr([2, 1, 10], 1)
+					  [(2), (1), (10)]'''
+list_nPr.__doc__ = '''This function lists all the possibilities of nPr given a list of elements and the r value.
+					  Note: Code is from itertools.permutations. The output is just list(permutations(a, b)). See the docs for itertools.permutations for more help.
+					  Example combinatorial use: List the ways to choose two numbers from 1 to 10 without replacement where order matters.
+
+					  >>> list_nPr(range(1, 11), 2)
+					  (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10), (2, 1), (2, 3), (2, 4), (2, 5), (2, 6), (2, 7), (2, 8), (2, 9), \
+					  (2, 10), (3, 1), (3, 2), (3, 4), (3, 5), (3, 6), (3, 7), (3, 8), (3, 9), (3, 10), (4, 1), (4, 2), (4, 3), (4, 5), (4, 6), (4, 7), (4, 8), \
+					  (4, 9), (4, 10), (5, 1), (5, 2), (5, 3), (5, 4), (5, 6), (5, 7), (5, 8), (5, 9), (5, 10), (6, 1), (6, 2), (6, 3), (6, 4), (6, 5), (6, 7), \
+					  (6, 8), (6, 9), (6, 10), (7, 1), (7, 2), (7, 3), (7, 4), (7, 5), (7, 6), (7, 8), (7, 9), (7, 10), (8, 1), (8, 2), (8, 3), (8, 4), (8, 5), \
+					  (8, 6), (8, 7), (8, 9), (8, 10), (9, 1), (9, 2), (9, 3), (9, 4), (9, 5), (9, 6), (9, 7), (9, 8), (9, 10), (10, 1), (10, 2), (10, 3), (10, 4), \
+					  (10, 5), (10, 6), (10, 7), (10, 8), (10, 9)]
+					  >>> list_nPr(range(1, 4), 3)
+					  [(1, 2), (1, 3), (2, 1), (2, 3), (3, 1), (3, 2)]
+					  >>> list_nPr([2, 1, 10], 1)
+					  [(2), (1), (10)]'''
+dynamic_remove.__doc__ = '''This function dynamically removes objects from a list. a is the list, b is the removing value. There can be many b values.
+							No combinatorial use. It is a utility.
+
+							>>> dynamic_remove([1, 2, 3], 2)
+							[1, 3]
+							>>> dynamic_remove([1, 2, 3], 2, 3)
+							[1]
+							>>> dynamic_remove([1, 2, 3], 1, 2, 3)
+							[]
+							>>> dynamic_remove([1, 2, 3, 4], 2, 3, 4, 5) # SPECIAL CASE. Will remove objects all b values even if the b value isn't in the list.
+							[1]'''
 # Test cases
 if __name__ == '__main__':
 	print(gcd(72, 60))
@@ -113,3 +154,6 @@ if __name__ == '__main__':
 	print(solveTable([1, 2, 3], [2, 3, 4], 'i * j % 2 == 0'))
 	print(countTable([1, 2, 3], [2, 3, 4], 'i * j % 2 == 0'))
 	print(probTable([1, 2, 3], [2, 3, 4], 'i * j % 2 == 0'))
+	print(list_nPr(range(1, 11), 2))
+	print(list_nCr(range(1, 11), 2))
+	print(dynamic_remove([1, 2, 3], 2))
